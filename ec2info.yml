@@ -1,17 +1,15 @@
 ---
-- name: gather ec2 instance information
+- name: gather ec2 instance information by region
   hosts: localhost
   vars_files: ec2_access_creds.yml
   tasks:
-    - name: gather info about ec2 instances by purpose tag
+    - name: gather info about ec2 instances in region {{ ec2_region }}
       ec2_instance_info:
         aws_access_key: "{{ ec2_access_key }}"
         aws_secret_key: "{{ ec2_secret_key }}"
         region: "{{ ec2_region }}"
-        filters:
-          "tag:Purpose": "{{ ec2_tag_purpose }}"
       register: instinfo
 
-    - name: print info
+    - name: print instance ids
       debug:
-        msg: "{{ instinfo }}"
+        msg: "{{ instinfo.instances | map(attribute='instance_id') | list }}"
