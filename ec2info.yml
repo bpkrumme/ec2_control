@@ -1,6 +1,6 @@
 ---
 - name: gather ec2 instance information by region
-  hosts: localhost
+  hosts: all
   vars_files: ec2_access_creds.yml
   tasks:
     - name: gather info about ec2 instances in region {{ ec2_region }}
